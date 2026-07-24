@@ -1,0 +1,33 @@
+{
+  "appId": "com.project-delivery.management-system",
+  "productName": "Project Delivery Management System",
+  "asar": false,
+  "compression": "store",
+  "directories": {
+    "output": "release",
+    "app": "dist-electron",
+    "buildResources": "build"
+  },
+  "files": [
+    "main.js",
+    "preload.js",
+    "package.json",
+    "icon.png"
+  ],
+  "extraResources": [
+    {
+      "from": "dist-electron/app",
+      "to": "app"
+    }
+  ],
+  "win": {
+    "target": "nsis",
+    "icon": "build/icon.ico"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "createDesktopShortcut": true,
+    "shortcutName": "Project Delivery Management System"
+  }
+}

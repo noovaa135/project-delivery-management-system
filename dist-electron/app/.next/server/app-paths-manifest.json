@@ -1,0 +1,22 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/dashboard/[section]/page": "app/dashboard/[section]/page.js",
+  "/dashboard/calendar/page": "app/dashboard/calendar/page.js",
+  "/dashboard/client-portal/page": "app/dashboard/client-portal/page.js",
+  "/dashboard/deliverables/page": "app/dashboard/deliverables/page.js",
+  "/dashboard/invoices/page": "app/dashboard/invoices/page.js",
+  "/dashboard/kanban/page": "app/dashboard/kanban/page.js",
+  "/dashboard/milestones/page": "app/dashboard/milestones/page.js",
+  "/dashboard/my-tasks/page": "app/dashboard/my-tasks/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/projects/page": "app/dashboard/projects/page.js",
+  "/dashboard/reports/page": "app/dashboard/reports/page.js",
+  "/dashboard/settings/page": "app/dashboard/settings/page.js",
+  "/dashboard/team/page": "app/dashboard/team/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js",
+  "/sign-in/page": "app/sign-in/page.js",
+  "/unauthorized/page": "app/unauthorized/page.js"
+}
