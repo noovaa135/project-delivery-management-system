@@ -34,8 +34,8 @@ const priorityBadge: Record<string, "secondary" | "default" | "warning" | "destr
 };
 
 const healthBarColors: Record<string, string> = {
-  "on-track": "from-emerald-500 to-emerald-400",
-  "at-risk": "from-amber-500 to-amber-400",
+  on_track: "from-emerald-500 to-emerald-400",
+  at_risk: "from-amber-500 to-amber-400",
   blocked: "from-rose-500 to-rose-400",
 };
 
@@ -89,8 +89,8 @@ function ProjectsDashboard({ projects }: { projects: ProjectItem[] }) {
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {filtered.map((project) => {
-            const healthOk = ["on-track", "at-risk", "blocked"].includes(project.health)
-              ? (project.health as DeliveryHealth) : "on-track";
+            const healthOk = ["on_track", "at_risk", "blocked"].includes(project.health)
+              ? (project.health as DeliveryHealth) : "on_track";
             return (
               <motion.div key={project.id} variants={cardVariants}>
                 <Card className="glass card-hover group relative overflow-hidden border-border/30">
@@ -132,7 +132,7 @@ function ProjectsDashboard({ projects }: { projects: ProjectItem[] }) {
                       <StatusBadge health={healthOk} />
                       <Badge variant={priorityBadge[project.priority]} className="rounded-md">{project.priority}</Badge>
                     </div>
-                    <Progress value={project.health === "on-track" ? 85 : project.health === "at-risk" ? 50 : 25} className="h-1.5" />
+                    <Progress value={project.health === "on_track" ? 85 : project.health === "at_risk" ? 50 : 25} className="h-1.5" />
                     <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground/50">
                       <span className="flex items-center gap-1"><CheckCircle2 className="h-3 w-3" />{project._count.tasks} tasks</span>
                       <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{project._count.milestones} milestones</span>

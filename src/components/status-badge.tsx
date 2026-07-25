@@ -1,15 +1,15 @@
 import { Badge } from "@/components/ui/badge";
 
-type DeliveryHealth = "on-track" | "at-risk" | "blocked";
+type DeliveryHealth = "on_track" | "at_risk" | "blocked";
 
 const healthConfig: Record<DeliveryHealth, { label: string; variant: "success" | "warning" | "destructive" }> = {
-  "on-track": { label: "On Track", variant: "success" },
-  "at-risk": { label: "At Risk", variant: "warning" },
+  on_track: { label: "On Track", variant: "success" },
+  at_risk: { label: "At Risk", variant: "warning" },
   blocked: { label: "Blocked", variant: "destructive" },
 };
 
 function StatusBadge({ health }: { health: DeliveryHealth }) {
-  const config = healthConfig[health] ?? healthConfig["on-track"];
+  const config = healthConfig[health] ?? healthConfig.on_track;
   return <Badge variant={config.variant}>{config.label}</Badge>;
 }
 

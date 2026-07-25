@@ -18,13 +18,13 @@ type HealthItem = { health: string; count: number };
 type BudgetSummary = { totalBudget: number; totalSpent: number };
 
 const healthColors: Record<string, string> = {
-  "on-track": "from-emerald-500 to-emerald-400",
-  "at-risk": "from-amber-500 to-amber-400",
+  on_track: "from-emerald-500 to-emerald-400",
+  at_risk: "from-amber-500 to-amber-400",
   blocked: "from-rose-500 to-rose-400",
 };
 
 const healthLabels: Record<string, string> = {
-  "on-track": "On Track", "at-risk": "At Risk", blocked: "Blocked",
+  on_track: "On Track", at_risk: "At Risk", blocked: "Blocked",
 };
 
 const formatCurrency = (value: number) =>

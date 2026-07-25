@@ -1,1 +1,1 @@
-export type DeliveryHealth = "on-track" | "at-risk" | "blocked";
+export type DeliveryHealth = "on_track" | "at_risk" | "blocked";

@@ -39,7 +39,7 @@ export async function getOverviewMetrics(
     0,
   );
   const onTrack =
-    healthGroups.find((g) => g.health === "on-track")?._count.id ?? 0;
+    healthGroups.find((g) => g.health === "on_track")?._count.id ?? 0;
   const healthPercentage =
     totalHealthProjects > 0
       ? Math.round((onTrack / totalHealthProjects) * 100)

@@ -90,7 +90,7 @@ async function main() {
       startDate: new Date("2026-01-15"),
       targetDate: new Date("2026-09-30"),
       budget: 450000,
-      health: "on-track",
+      health: "on_track",
     },
     {
       name: "Mobile App v2",
@@ -100,7 +100,7 @@ async function main() {
       startDate: new Date("2026-03-01"),
       targetDate: new Date("2026-11-15"),
       budget: 320000,
-      health: "at-risk",
+      health: "at_risk",
     },
     {
       name: "CRM Integration Hub",
@@ -110,7 +110,7 @@ async function main() {
       startDate: new Date("2026-07-01"),
       targetDate: new Date("2026-12-31"),
       budget: 180000,
-      health: "on-track",
+      health: "on_track",
     },
     {
       name: "Data Analytics Dashboard",
@@ -131,7 +131,7 @@ async function main() {
       targetDate: new Date("2026-02-28"),
       completedAt: new Date("2026-02-20"),
       budget: 95000,
-      health: "on-track",
+      health: "on_track",
     },
   ];
 

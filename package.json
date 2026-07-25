@@ -14,13 +14,12 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "db:seed": "prisma db seed",
+    "db:reset": "prisma migrate reset --force",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
-    "electron:dev": "npm run db:generate && npm run build && node build/prepare-electron.js && electron dist-electron",
-    "electron:build": "npm run db:generate && npm run build && node build/prepare-electron.js && electron-builder --win --config electron-builder.json",
-    "electron:build:dir": "npm run db:generate && npm run build && node build/prepare-electron.js && electron-builder --win --config electron-builder.json --dir",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -60,8 +59,6 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitejs/plugin-react": "^6.0.3",
-    "electron": "^43.2.0",
-    "electron-builder": "^26.15.3",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "eslint-config-prettier": "^10.1.8",

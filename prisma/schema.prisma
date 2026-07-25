@@ -3,8 +3,78 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+enum OrganizationRole {
+  SYSTEM_ADMIN
+  PROJECT_MANAGER
+  TEAM_MEMBER
+  CLIENT
+  STAKEHOLDER
+}
+
+enum ProjectStatus {
+  PLANNING
+  ACTIVE
+  ON_HOLD
+  COMPLETED
+  CANCELLED
+}
+
+enum ProjectPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ProjectHealth {
+  on_track
+  at_risk
+  blocked
+}
+
+enum MilestoneStatus {
+  pending
+  in_progress
+  completed
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  IN_REVIEW
+  DONE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum DeliverableStatus {
+  pending
+  approved
+  rejected
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  PAID
+  OVERDUE
+  CANCELLED
+}
+
+enum NotificationType {
+  info
+  success
+  warning
+  error
 }
 
 model User {
@@ -78,12 +148,12 @@ model Organization {
 }
 
 model OrganizationMember {
-  id             String   @id @default(cuid())
+  id             String           @id @default(cuid())
   organizationId String
   userId         String
-  role           String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  role           OrganizationRole
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 
   organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -94,19 +164,19 @@ model OrganizationMember {
 }
 
 model Project {
-  id          String    @id @default(cuid())
-  name        String
-  description String?
-  status      String    @default("PLANNING")
-  priority    String    @default("MEDIUM")
-  startDate   DateTime?
-  targetDate  DateTime?
-  completedAt DateTime?
-  budget      Float?
-  health      String    @default("on-track")
+  id             String         @id @default(cuid())
+  name           String
+  description    String?
+  status         ProjectStatus  @default(PLANNING)
+  priority       ProjectPriority @default(MEDIUM)
+  startDate      DateTime?
+  targetDate     DateTime?
+  completedAt    DateTime?
+  budget         Float?
+  health         ProjectHealth  @default(on_track)
   organizationId String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
 
   organization  Organization    @relation(fields: [organizationId], references: [id], onDelete: Cascade)
   tasks         Task[]
@@ -121,12 +191,12 @@ model Project {
 }
 
 model ProjectMember {
-  id        String   @id @default(cuid())
+  id        String             @id @default(cuid())
   projectId String
   userId    String
-  role      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  role      OrganizationRole
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
 
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
   user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -137,19 +207,19 @@ model ProjectMember {
 }
 
 model Task {
-  id             String   @id @default(cuid())
+  id             String       @id @default(cuid())
   title          String
   description    String?
-  status         String   @default("TODO")
-  priority       String   @default("MEDIUM")
+  status         TaskStatus   @default(TODO)
+  priority       TaskPriority @default(MEDIUM)
   assigneeId     String?
   projectId      String
   milestoneId    String?
   dueDate        DateTime?
   estimatedHours Float?
   actualHours    Float?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
 
   assignee  User?      @relation("TaskAssignee", fields: [assigneeId], references: [id])
   project   Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -161,16 +231,16 @@ model Task {
 }
 
 model Milestone {
-  id          String    @id @default(cuid())
+  id          String          @id @default(cuid())
   name        String
   description String?
   dueDate     DateTime?
   completedAt DateTime?
-  status      String    @default("pending")
-  progress    Int       @default(0)
+  status      MilestoneStatus @default(pending)
+  progress    Int             @default(0)
   projectId   String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 
   project      Project      @relation(fields: [projectId], references: [id], onDelete: Cascade)
   tasks        Task[]
@@ -180,18 +250,18 @@ model Milestone {
 }
 
 model Deliverable {
-  id           String   @id @default(cuid())
+  id           String            @id @default(cuid())
   name         String
   description  String?
-  status       String   @default("pending")
+  status       DeliverableStatus @default(pending)
   fileUrl      String?
   fileName     String?
   fileSize     Int?
   uploadedById String?
   projectId    String
   milestoneId  String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
 
   uploadedBy User?      @relation("FileUploader", fields: [uploadedById], references: [id])
   project    Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -202,19 +272,19 @@ model Deliverable {
 }
 
 model Invoice {
-  id            String   @id @default(cuid())
-  invoiceNumber String   @unique
+  id            String        @id @default(cuid())
+  invoiceNumber String        @unique
   description   String?
   amount        Float
-  tax           Float    @default(0)
+  tax           Float         @default(0)
   total         Float
-  status        String   @default("DRAFT")
+  status        InvoiceStatus @default(DRAFT)
   dueDate       DateTime?
   paidAt        DateTime?
   projectId     String
   clientId      String?
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
   project  Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   client   User?     @relation("InvoiceClient", fields: [clientId], references: [id])
@@ -239,14 +309,14 @@ model Payment {
 }
 
 model Notification {
-  id        String   @id @default(cuid())
+  id        String           @id @default(cuid())
   userId    String
   title     String
   message   String?
-  type      String   @default("info")
-  read      Boolean  @default(false)
+  type      NotificationType @default(info)
+  read      Boolean          @default(false)
   link      String?
-  createdAt DateTime @default(now())
+  createdAt DateTime         @default(now())
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
