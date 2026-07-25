@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -16,7 +16,6 @@ import { signInSchema, type SignInInput } from "@/schemas/auth";
 import { cn } from "@/lib/utils";
 
 export function SignInForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -28,21 +27,28 @@ export function SignInForm() {
 
   async function onSubmit(values: SignInInput) {
     setIsSubmitting(true);
-    const result = await signIn("credentials", {
-      ...values,
-      redirect: false,
-      callbackUrl,
-    });
-    setIsSubmitting(false);
+    try {
+      const result = await signIn("credentials", {
+        ...values,
+        redirect: false,
+        callbackUrl,
+      });
 
-    if (result?.error) {
-      toast.error("Invalid email or password");
-      return;
+      if (result?.error) {
+        toast.error("Invalid email or password");
+        return;
+      }
+
+      if (result?.url) {
+        window.location.href = result.url;
+      } else {
+        window.location.href = callbackUrl;
+      }
+    } catch {
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    toast.success("Signed in successfully");
-    router.push(result?.url ?? callbackUrl);
-    router.refresh();
   }
 
   return (

@@ -4,11 +4,20 @@ import { getToken } from "next-auth/jwt";
 
 import { isProtectedPath } from "@/server/auth/authorization";
 
+const cookieName = process.env.NODE_ENV === "production"
+  ? "__Secure-next-auth.session-token"
+  : "next-auth.session-token";
+
 export default async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (isProtectedPath(pathname)) {
-    const token = await getToken({ req: request, secret: process.env.AUTH_SECRET });
+    const token = await getToken({
+      req: request,
+      secret: process.env.AUTH_SECRET,
+      cookieName,
+      secureCookie: process.env.NODE_ENV === "production",
+    });
 
     if (!token) {
       const signInUrl = new URL("/sign-in", request.nextUrl.origin);

@@ -9,9 +9,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
   },
   pages: {
     signIn: "/sign-in",
+  },
+  cookies: {
+    sessionToken: {
+      name: process.env.NODE_ENV === "production"
+        ? "__Secure-next-auth.session-token"
+        : "next-auth.session-token",
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: process.env.NODE_ENV === "production",
+      },
+    },
   },
   providers: [
     Credentials({
@@ -63,7 +77,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.role = user.role;
         token.organizationId = user.organizationId;
@@ -72,13 +86,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       return token;
     },
-    session({ session, token }) {
-      session.user.id = token.sub ?? "";
+    async session({ session, token }) {
+      if (token.sub) {
+        session.user.id = token.sub;
+      }
       session.user.role = token.role;
       session.user.organizationId = token.organizationId;
       session.user.organizationName = token.organizationName;
 
       return session;
+    },
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith("/")) return `${baseUrl}${url}`;
+      if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
     },
   },
 });
