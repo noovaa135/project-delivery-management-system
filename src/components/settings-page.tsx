@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Building, Eye, EyeOff, Lock, Mail, User, Bell, Shield, Palette } from "lucide-react";
+import { Building, Eye, EyeOff, Lock, Mail, User, Bell, Shield, Palette, Moon, Sun } from "lucide-react";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
