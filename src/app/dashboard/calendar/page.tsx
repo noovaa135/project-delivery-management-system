@@ -5,8 +5,8 @@ import { prisma } from "@/lib/db";
 
 export default async function CalendarPage() {
   const session = await requireSession();
-  const orgId = session.user.organizationId;
-  if (!orgId) redirect("/sign-in");
+  const organizationId = session.user.organizationId;
+  if (!organizationId) redirect("/sign-in");
 
   const [tasks, milestones, deliverables] = await Promise.all([
     prisma.task.findMany({
