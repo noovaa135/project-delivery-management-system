@@ -1,4 +1,4 @@
-import { auth } from "@/server/auth/config";
+import { auth } from "@/server/auth/config.middleware";
 import { isProtectedPath } from "@/server/auth/authorization";
 import { NextResponse } from "next/server";
 
